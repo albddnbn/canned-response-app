@@ -1,0 +1,5 @@
+MFA change
+
+Hi $owner,
+
+In order to have a new phone number added to your account's MFA authentication methods, please visit our Virtual Technical Support Center via https://support.dtcc.edu, or come to campus in person with your student ID so that we can visually verify your identity. I apologize for any inconvenience, we do this to help promote user account security. Thank you for your time.

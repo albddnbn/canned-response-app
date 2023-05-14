@@ -1,0 +1,21 @@
+account access generic
+
+Hi $owner,
+
+If you're having trouble resetting your password, please visit the Virtual Technical Support Center Zoom meeting via https://support.dtcc.edu, or call the collegewide IT Help Desk line at 302-857-1700.
+
+You can also attempt to reset your password by yourself through my.dtcc.edu once every 7 days here: ﻿https://account.dtcc.edu/forgot-password﻿.
+
+If you've just reset your password successfully, and are still receiving a "Username or password invalid" error:
+
+- Clear your browser cache and any old stored 'dtcc.edu' passwords by following these directions: https://its.uiowa.edu/support/article/719.
+
+- Try logging in from a smartphone with Wi-Fi turned off, if you've been using a Wi-Fi connected device.
+
+- Try a Wi-Fi connected device if you've been using a smartphone with Wi-Fi turned off
+
+- Turn airplane mode on for about 5 seconds on your phone (with Wi-Fi off), then turn airplane mode back on to force phone to request new IP address, then attempt login.﻿
+
+If you're still unable to log in, please wait ~45 minutes without attempting any logins. After this period of time, the lock on your account should be removed. If you do have to call us with any account access problems at this point, please let us know that you've already tried waiting the 45 minute period.
+
+Please let me know if I can help with anything else, have a great day!

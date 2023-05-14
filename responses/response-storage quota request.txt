@@ -1,0 +1,9 @@
+storage quota request
+
+Hi $owner,
+
+This is Alex from Delaware Tech IT Support. Before we increase your storage quota, could you please try to clear out any unnecessary files to see if that helps with the storage issues?
+
+The most common place to find large files that you don’t need anymore is your Downloads folder. Please let me know if you’re still having storage space issues after clearing out any unnecessary files.
+
+Thank you for your time.

@@ -1,0 +1,16 @@
+change mfa method
+
+Hi $owner,
+
+
+To change the phone number used for MFA for your account, you can go to https://office.com, and login with your Delaware Tech credentials. Then, click your name or profile picture in the top right of the page, and select "View Account".
+
+Next, there will be some 'tiles' in the center of the page. Please click on the "Update Info" option inside the "Security" tile. 
+
+This should bring you to the page where you can add, edit, or remove any of your Authentication methods, as well as set the Default Authentication method.
+If you don't have access to your account, please call our collegewide IT Help Desk line at 302-857-1700. We'll have to verify your identity before making the changes to your account.
+You can also visit our Virtual Technical Support Center via https://support.dtcc.edu, or come to campus in person with your student ID.
+I apologize for any inconvenience, MFA was implemented recently in order to increase individual user account security at Delaware Tech.
+For more info on MFA at Delaware Tech: https://iit.dtcc.edu/multi-factor-authentication/
+Tips for setting up the Microsoft Authenticator app: https://iit.dtcc.edu/setting-up-multi-factor-authentication/
+Thank you for your time.

@@ -1,0 +1,7 @@
+o365 install
+
+Hi $owner,
+
+To install the Office 365 suite of apps, please navigate to our O365 installation support article in your browser: https://iit.dtcc.edu/wp-content/uploads/2018/08/Download-Microsoft-Office-1.pdf.
+
+Please let me know if you run into any issues during the download or installation process. Thank you for your time, and have a great day!
