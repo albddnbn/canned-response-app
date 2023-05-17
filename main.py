@@ -20,10 +20,11 @@ heights["add"] = 600
 
 # Settings class that would take all 3 windows as argument?
 
-class CustomWidget:
+class CannedFunctions:
     def __init__(self):
         pass
     # a 'normal' button in this case has a "#00467f" bg and white fg
+
     def style_normal_button(self, button):
         # set bg and fg
         button.background = "#00467f"
@@ -33,9 +34,11 @@ class CustomWidget:
         self.set_hover_normal(button)
 
     def set_hover_normal(self, button):
-        button.bind("<Enter>", func=lambda e: button.config(background="#ffffff", fg="#00467f"))
-        button.bind("<Leave>", func=lambda e: button.config(background="#00467f", fg="#ffffff"))
-    
+        button.bind("<Enter>", func=lambda e: button.config(
+            background="#ffffff", fg="#00467f"))
+        button.bind("<Leave>", func=lambda e: button.config(
+            background="#00467f", fg="#ffffff"))
+
     # erase text inside a Text widget when its clicked on, then unbind the erase function from the mouse click
     def erase_text(self, widget):
         widget.delete('1.0', tk.END)
@@ -43,9 +46,8 @@ class CustomWidget:
 
     def change_window(self, tohide, toshow):
         tohide.withdraw()
-        # tohide.withdraw()
         toshow.deiconify()
-        # toshow.deiconify()
+
     def return_home(self, hide, show, windows):
         # hide both view / add windows:
         windows["view"].withdraw()
@@ -53,8 +55,7 @@ class CustomWidget:
         hide.withdraw()
         # tohide.withdraw()
         show.deiconify()
-    
-    # function below will show the program docs / readme file (right now its just a txt file, maybe make an actual tkinter Window at some point)
+
     def show_readme(self):
         # startfile opens the file with the system's default text editor (windows / linux / mac) according to stack overflow
         # https://stackoverflow.com/questions/43007196/python-open-a-textnotepad-document
@@ -64,66 +65,49 @@ class CustomWidget:
         # if event.widget == title_entry:
         #     erase_text(content_entry)
         event.widget.tk_focusNext().focus()
-        return("break")
+        return ("break")
+
     def create_menu(self, window, windows_dict):
-            # separate out the windows_dict:
-            main_win = windows_dict["main"]
-            add_win = windows_dict["add"]
-            view_win = windows_dict["view"]
-            settings_win = windows_dict["settings"]
-            # create outer menubar
-            menubar = tk.Menu(window)
-            # create File cascade:
-            filemenu = tk.Menu(menubar, tearoff=0)
+        # separate out the windows_dict:
+        main_win = windows_dict["main"]
+        add_win = windows_dict["add"]
+        view_win = windows_dict["view"]
+        settings_win = windows_dict["settings"]
+        # create outer menubar
+        menubar = tk.Menu(window)
+        # create File cascade:
+        filemenu = tk.Menu(menubar, tearoff=0)
 
-            filemenu = tk.Menu(menubar, tearoff=0)
-            filemenu.add_command(label="Create new response", command=lambda: add_win.change_window(window, add_win))
-            filemenu.add_command(label="View stored responses", command=lambda: view_win.view_stored_responses())
+        filemenu = tk.Menu(menubar, tearoff=0)
+        filemenu.add_command(label="Create new response",
+                             command=lambda: add_win.change_window(window, add_win))
+        filemenu.add_command(label="View stored responses",
+                             command=lambda: view_win.view_stored_responses())
 
-            filemenu.add_separator()
-            filemenu.add_command(label="Exit", command=window.quit)
+        filemenu.add_separator()
+        filemenu.add_command(label="Exit", command=window.quit)
 
-            menubar.add_cascade(label="File", menu=filemenu)
+        menubar.add_cascade(label="File", menu=filemenu)
 
-            # create Edit cascade
-            editmenu = tk.Menu(menubar, tearoff=0)
-            editmenu.add_command(label="Settings", command=lambda: settings_win.deiconify())
-            menubar.add_cascade(label="Edit", menu=editmenu)
+        # create Edit cascade
+        editmenu = tk.Menu(menubar, tearoff=0)
+        editmenu.add_command(
+            label="Settings", command=lambda: settings_win.deiconify())
+        menubar.add_cascade(label="Edit", menu=editmenu)
 
-            # create Help cascade:
+        # create Help cascade:
 
-            helpmenu = tk.Menu(menubar, tearoff=0)
-            helpmenu.add_command(label="About / Readme", command=CustomWidget.show_readme)
-            helpmenu.add_separator()
+        helpmenu = tk.Menu(menubar, tearoff=0)
+        helpmenu.add_command(label="About / Readme",
+                             command=CannedFunctions.show_readme)
+        helpmenu.add_separator()
 
-            menubar.add_cascade(label="Help", menu=helpmenu)
+        menubar.add_cascade(label="Help", menu=helpmenu)
 
-            window.config(menu=menubar)
-    # when windows are closed - withdraw them instead of destroying them:
-    # assign this funciton to close event with: widget.protocol("WM_DELETE_WINDOW", _on_closing)
-    def _on_closing(self, win_master):
-        close_window = tk.Toplevel()
-        close_window.title("Exit program?")
+        window.config(menu=menubar)
 
-        question = tk.Label(close_window, text="Are you sure you'd like to exit?")
 
-        button_frame = tk.Frame(close_window)
-        # this will be interesting if the below arguments to command work
-        home_button = tk.Button(button_frame, text="return home", command=lambda: self.change_window(close_window, win_master))
-        self.style_normal_button(home_button)
-        exit_button = tk.Button(button_frame, text="exit program", command=exit)
-        self.style_normal_button(exit_button)
-
-        home_button.pack(side=tk.LEFT, padx=(10,15))
-        exit_button.pack(side=tk.LEFT, padx=(15,10))
-        button_frame.pack(side=tk.BOTTOM, pady=(15,10))
-
-        question.pack(side=tk.TOP, pady=5)
-
-        # present a window with options to either 1. exit app or 2. go back to main window
-        self.withdraw()
-
-class Settings(tk.Toplevel, CustomWidget):
+class Settings(tk.Toplevel, CannedFunctions):
     def __init__(self, windows):
         super().__init__()
         self.windows = windows
@@ -133,43 +117,49 @@ class Settings(tk.Toplevel, CustomWidget):
 
         self.geometry("400x300")
         self.title("Canned response app settings:")
-        self.config(bg = '#00a160')
+        self.config(bg='#00a160')
 
         self.wm_attributes('-toolwindow', True)
 
         # title - 'Settings'
-        settings_title = tk.Label(self, text="Settings: ", font="Roboto 14 bold", fg="#ffffff", bg="#00a160")
+        settings_title = tk.Label(
+            self, text="Settings: ", font="Roboto 14 bold", fg="#ffffff", bg="#00a160")
 
-        settings_title.pack(side=tk.TOP, pady=(20,15))
+        settings_title.pack(side=tk.TOP, pady=(20, 15))
 
         # frame to contain all settings:
         settings_frame = tk.Frame(self, bg="#00a160")
 
         opacity_frame = tk.Frame(settings_frame, bg="#00a160")
 
-        opacity_label = tk.Label(opacity_frame, text="Window opacity: ", font="Roboto 14 bold", fg="#ffffff", bg="#00a160")
+        opacity_label = tk.Label(opacity_frame, text="Window opacity: ",
+                                 font="Roboto 14 bold", fg="#ffffff", bg="#00a160")
 
         current_opacity = tk.IntVar()
         current_opacity.set(self.main_win.attributes("-alpha")*10)
-        self.opacity_spinbox = tk.Spinbox(opacity_frame, from_=0, to=10, increment=1, textvariable=current_opacity, command=self.update_opacity)
+        self.opacity_spinbox = tk.Spinbox(
+            opacity_frame, from_=0, to=10, increment=1, textvariable=current_opacity, command=self.update_opacity)
 
-        opacity_label.pack(side=tk.LEFT, padx=(5,15))
-        self.opacity_spinbox.pack(side=tk.RIGHT, padx=(5,5))
+        opacity_label.pack(side=tk.LEFT, padx=(5, 15))
+        self.opacity_spinbox.pack(side=tk.RIGHT, padx=(5, 5))
         opacity_frame.pack(side=tk.TOP, padx=10, pady=5)
 
         settings_frame.pack()
         # on closing
-        self.protocol("WM_DELETE_WINDOW", self._on_closing)
+        # self.protocol("WM_DELETE_WINDOW", self._on_closing)
         # hide window initially
         self.withdraw()
+
     def update_opacity(self):
         new_opacity = int(self.opacity_spinbox.get())/10
- 
+
         self.windows["main"].attributes('-alpha', new_opacity)
         self.windows["view"].attributes('-alpha', new_opacity)
 
 # The bottom frame which holds the Home button on the view/add response windows:
-class BottomFrame(tk.Frame, CustomWidget):
+
+
+class BottomFrame(tk.Frame, CannedFunctions):
     def __init__(self, window, windows_dict):
         # separate out windows dict:
         main_win = windows_dict["main"]
@@ -180,16 +170,27 @@ class BottomFrame(tk.Frame, CustomWidget):
         # home button photoimage
         self.home_photo = tk.PhotoImage(file="./img/home-tk.png")
         # btm_bars[key]["frame"] = tk.Frame(windows[key], bg="#00a160")
-        self.home_button = tk.Button(self, image=self.home_photo, command=lambda: self.return_home(window, main_win, windows_dict))
+        self.home_button = tk.Button(self, image=self.home_photo, command=lambda: self.return_home(
+            window, main_win, windows_dict))
         # self.home_button = tk.Button(self, image=self.home_photo, bg="#ffffff", command=lambda: self.return_home(view_win, main_win))
         self.home_button.image = self.home_photo
         self.pack(side=tk.BOTTOM, fill=tk.X)
         self.home_button.pack(side=tk.LEFT, padx=10, pady=10)
         # windows[key].withdraw()
 
-# make a class for each window:
-class MainWindow(tk.Tk, CustomWidget):
+
+class MainWindow(tk.Tk, CannedFunctions):
     def __init__(self, height, width, bg_color):
+        """
+        __init__ the home window - has two buttons on it: 'view' and 'add'
+
+        _extended_summary_
+
+        Args:
+            height (int): height of main window
+            width (int): width of main window
+            bg_color (str): bg_color of main window in hex format
+        """
         self.buttons = {
             "view": "",
             "add": ""
@@ -204,7 +205,7 @@ class MainWindow(tk.Tk, CustomWidget):
         top_y = int(screen_height/5 - height / 2)
         self.geometry(f'{width}x{height}+{left_x}+{top_y}')
 
-        #Add a background color to the Main windows["main"]dow
+        # Add a background color to the Main windows["main"]dow
         self.config(bg=bg_color)
         # set alpha to 0.5 initially (user can adjust through GUI settings)
         self.attributes('-alpha', 0.5)
@@ -213,25 +214,36 @@ class MainWindow(tk.Tk, CustomWidget):
 
         # create the view and add buttons on main window:
         for button in ["view", "add"]:
-            self.buttons[button] = tk.Button(self, font='Roboto 16 bold', bg="#00467f", fg="#ffffff", width=8)
+            self.buttons[button] = tk.Button(
+                self, font='Roboto 16 bold', bg="#00467f", fg="#ffffff", width=8)
             self.style_normal_button(self.buttons[button])
         self.buttons["view"]["text"] = "view"
         self.buttons["add"]["text"] = "add"
 
-        self.buttons["view"].pack(side=tk.LEFT, padx=(35,5), pady=0)
-        self.buttons["add"].pack(side=tk.RIGHT, padx=(5,35), pady=0)
-
- 
+        self.buttons["view"].pack(side=tk.LEFT, padx=(35, 5), pady=0)
+        self.buttons["add"].pack(side=tk.RIGHT, padx=(5, 35), pady=0)
 
 
-class ViewWindow(tk.Toplevel, CustomWidget):
+class ViewWindow(tk.Toplevel, CannedFunctions):
     def __init__(self, win_master, win_height, win_width, win_title, add_win):
+        """
+        __init__ shows the 'view responses' part of the app, where you can view any responses that you've created or stored in the correct format.
+
+        A row of buttons is generated for every response. Each row has a big dark blue button that copies the response to clipboard, a pencil/edit button that allows for editing of a response, and a trashcan icon that deletes a response and response file.
+
+        Args:
+            win_master (_type_): _description_
+            win_height (int): _description_
+            win_width (int): _description_
+            win_title (str): _description_
+            add_win (_type_): _description_
+        """
         # main window
         self.win_master = win_master
         # add / create new response window
         self.add_window = add_win
         super().__init__(win_master)
-        self.config(bg = '#00a160')
+        self.config(bg='#00a160')
 
         # set geometry of window
         self.geometry(f"{win_width}x{win_height}")
@@ -246,29 +258,29 @@ class ViewWindow(tk.Toplevel, CustomWidget):
         self.response_buttons = {}
 
         # Label widget for 'title'
-        self.view_title = tk.Label(self, text="View stored responses", bg="#00a160", font="Roboto 14 bold", fg="#ffffff")
+        self.view_title = tk.Label(
+            self, text="View stored responses", bg="#00a160", font="Roboto 14 bold", fg="#ffffff")
         # textbox for user's name:
         self.name_txtbox = tk.Text(self, height=1, width=20)
         self.name_txtbox.insert('1.0', "Enter user's name")
-        self.name_txtbox.bind("<Button-1>", func=lambda e: self.erase_text(self.name_txtbox))
-        
-        # create the edit and delete photos for icons:
+        self.name_txtbox.bind(
+            "<Button-1>", func=lambda e: self.erase_text(self.name_txtbox))
+
         # define the trash icon picture photo
         self.delete_img = tk.PhotoImage(file="./img/delete-tk.png")
         # define the edit icon
         self.edit_img = tk.PhotoImage(file="./img/edit-tk.png")
-        
+
         # create large frame to hold all response buttons / etc.
         self.view_response_frame = tk.Frame(self)
         # pack view Window widgets
-        self.view_title.pack(side=tk.TOP, padx=20, pady=(25,10))
+        self.view_title.pack(side=tk.TOP, padx=20, pady=(25, 10))
         self.name_txtbox.pack(side=tk.TOP, pady=(10, 10))
-        self.view_response_frame.pack(side=tk.TOP, padx=10, pady=15, fill=tk.BOTH)
+        self.view_response_frame.pack(
+            side=tk.TOP, padx=10, pady=15, fill=tk.BOTH)
         self.attributes('-alpha', 0.5)
         self.wm_attributes('-topmost', True)
 
-        # make that dialog pop up if you hit the 'X' button that asks if you really want to exit
-        self.protocol("WM_DELETE_WINDOW", lambda: self._on_closing(self.win_master))
 
     def view_stored_responses(self):
         # print("view stored responses")
@@ -281,12 +293,9 @@ class ViewWindow(tk.Toplevel, CustomWidget):
         for frame in self.view_response_frame.winfo_children():
             frame.destroy()
 
-        # hide main
+        # hide the main window, and show the view responses window
         self.win_master.withdraw()
-        # show view responses window
         self.deiconify()
-        # delete_img = PhotoImage(file="delete.png", height=100, width=100)
-
         # for every file in the responses directory
         for file in os.listdir("responses"):
             # if it is a response txt file (in the right format)
@@ -297,43 +306,56 @@ class ViewWindow(tk.Toplevel, CustomWidget):
                     # also chop of \n with [:-1]
                     title = lines[0][:-1]
                     print("viewing title: "+title)
-                    # each response-*.txt file will have a key in the resp_btns dict,
-                    # whose value will be another dictionary, the 'btn' key holds the main button that user presses to copy ticket response
-                    # 'content' holds the ticket response content
-                    # 'box' holds the Box widget that holds all 3 buttons
-                    # 'edit'/'delete' buttons to allow for edit/deletion of ticket response txt files
                     self.response_buttons[title] = {}
                     for key in keylist:
-                        if key == "content": 
+                        if key == "content":
                             self.response_buttons[title][key] = []
                         else:
                             self.response_buttons[title][key] = ""
-                    self.response_buttons[title]["frame"] = tk.Frame(self.view_response_frame, bg="#00a160")
+                    self.response_buttons[title]["frame"] = tk.Frame(
+                        self.view_response_frame, bg="#00a160")
                     # padframe just adds some padding above each frame (tried to just add padding in when packing the frame, but background kept showing as white)
-                    self.response_buttons[title]["padframe"] = tk.Frame(self.response_buttons[title]["frame"], height=5, bg="#00a160")
-                    self.response_buttons[title]["btn"] = tk.Button(self.response_buttons[title]['frame'], text=title, height=2, width=25, bg="#00467f", fg="#ffffff", command=lambda thistitle=title: self.copy_to_clipboard(thistitle), padx=1, pady=1)
-                    self.response_buttons[title]["edit"] = tk.Button(self.response_buttons[title]['frame'], image=self.edit_img,  bg="#00467f", fg="#ffffff", command=lambda thistitle=title: self.edit_response(thistitle))
+                    self.response_buttons[title]["padframe"] = tk.Frame(
+                        self.response_buttons[title]["frame"], height=5, bg="#00a160")
+                    self.response_buttons[title]["btn"] = tk.Button(self.response_buttons[title]['frame'], text=title, height=2, width=25,
+                                                                    bg="#00467f", fg="#ffffff", command=lambda thistitle=title: self.copy_to_clipboard(thistitle), padx=1, pady=1)
+                    self.response_buttons[title]["edit"] = tk.Button(
+                        self.response_buttons[title]['frame'], image=self.edit_img,  bg="#00467f", fg="#ffffff", command=lambda thistitle=title: self.edit_response(thistitle))
 
                     # create the delete button:
-                    self.response_buttons[title]["delete"] = tk.Button(self.response_buttons[title]['frame'], image=self.delete_img, command=lambda thistitle=title: self.delete_response(thistitle), width=30, height=30,  bg="#00467f", fg="#ffffff")
-                    
+                    self.response_buttons[title]["delete"] = tk.Button(self.response_buttons[title]['frame'], image=self.delete_img, command=lambda thistitle=title: self.delete_response(
+                        thistitle), width=30, height=30,  bg="#00467f", fg="#ffffff")
+
                     for button in ["btn", "edit", "delete"]:
-                        self.style_normal_button(self.response_buttons[title][button])
+                        self.style_normal_button(
+                            self.response_buttons[title][button])
                     self.response_buttons[title]["frame"]['background'] = "#00a160"
                     # load content into the 'content' key:
                     for line in lines[2:]:
                         self.response_buttons[title]['content'].append(line)
 
                     # pack frame:
-                    self.response_buttons[title]['frame'].pack(side=tk.TOP, fill=tk.BOTH)
-                    self.response_buttons[title]["padframe"].pack(side=tk.TOP, fill=tk.X)
-                    self.response_buttons[title]['btn'].pack(side=tk.LEFT, padx=(5,5))
-                    self.response_buttons[title]["edit"].pack(side=tk.LEFT, padx=(5,10))
-                    self.response_buttons[title]["delete"].pack(side=tk.LEFT, padx=5)
-    
+                    self.response_buttons[title]['frame'].pack(
+                        side=tk.TOP, fill=tk.BOTH)
+                    self.response_buttons[title]["padframe"].pack(
+                        side=tk.TOP, fill=tk.X)
+                    self.response_buttons[title]['btn'].pack(
+                        side=tk.LEFT, padx=(5, 5))
+                    self.response_buttons[title]["edit"].pack(
+                        side=tk.LEFT, padx=(5, 10))
+                    self.response_buttons[title]["delete"].pack(
+                        side=tk.LEFT, padx=5)
+
     # when edit button is clicked for a response - the create response window will open with the response's title / content inserted so it can be edited
     def edit_response(self, respon_title):
-        # print("editing: "+respon_title)
+        """
+        edit_response allows user to edit any of their stored responses.
+
+        Edit a response by clicking any of the 'pencil' buttons next to any of the big dark blue buttons on the 'view' responses window.
+
+        Args:
+            respon_title (str): this is the title at the top of the edit response window, and also the name of the txt file that holds the response content
+        """
         self.withdraw()
 
         # insert values into textboxes:
@@ -345,15 +367,22 @@ class ViewWindow(tk.Toplevel, CustomWidget):
         for line in self.response_buttons[respon_title]["content"]:
             new_string += line
         self.add_window.content_entry.insert('1.0', new_string)
-        # TODO: make the title_entry unbind the function that erases all text when its clicked the first time - dont want to erase the entire existing response!
-        # for now, I just commented out the part where i bind the erase_text function to the title_entry widget to being with, in the creation of add inwdow class
+
         self.add_window.title_entry.unbind("<Button-1>")
         self.add_window.content_entry.unbind("<Button-1>")
         # show create response window
         self.add_window.deiconify()
-    
+
     # when delete response button (trash can) is clicked
     def delete_response(self, resp_title):
+        """
+        delete_response lets user delete a response from the gui and the response txct file directory.
+
+        Delete a response by clicking any of the trash can icons, next to any of the big dark blue buttons on the 'view' responses window.
+
+        Args:
+            resp_title (str): this is the title at the top of the edit response window, and also the name of the txt file that holds the response content
+        """
         # all I need to do is delete the txt file, then call the update function and everything else will update itself based on the response-*.txt files in the directory
         os.remove(f"./responses/response-{resp_title}.txt")
         self.response_buttons[resp_title]
@@ -361,16 +390,23 @@ class ViewWindow(tk.Toplevel, CustomWidget):
 
     # updates the view responses window after deletion of a response
     def update_view_responses(self):
+        """
+        update_view_responses updates the dark blue response buttons on the 'view' window by recreating the group of buttons, <b>after</b> a response (And response file) has been deleted.
+
+        So, the group of buttons will be reconstructed, and it won't have the button/response that was just deleted.
+        """
         self.command = self.view_stored_responses
         self.win_master.after(500, self.view_stored_responses)
 
     def copy_to_clipboard(self, resp_title):
-        # change the button text to "copied!"
-        # original_text = self.response_buttons[resp_title]["btn"]["text"]
-        # self.response_buttons[resp_title]["btn"]["text"] = "copied!"
-        # set a call to the function that will set the button's text back to normal - to run in 1 second?
-        # self.win_master.after(1000, self.turn_button_back(resp_title, original_text))
+        """
+        copy_to_clipboard copies the response text to the user's clipboard when a dark blue button is clicked.
 
+        Whatever name is typed into the top textbox on the 'view' window will be inserted as the user's name into the responses. The name will take the place of the string '$owner' (without quotes) in response text.
+
+        Args:
+            resp_title (str): this is the title at the top of the edit response window, and also the name of the txt file that holds the response content
+        """
         # get ticket owner's name from name_txtbox
         ticketowner = self.name_txtbox.get('1.0', 'end-1c')
 
@@ -384,95 +420,101 @@ class ViewWindow(tk.Toplevel, CustomWidget):
                 line_w_name = line
             new_string += f"{line_w_name}"
         pyperclip.copy(new_string)
-        # print("Content copied")
-
-    # function to turn button text back to normal - doesn't work yet
-    # def turn_button_back(self, btn_title, the_text):
-    #     self.response_buttons[btn_title]["btn"]["text"] = the_text
 
 
-class AddWindow(tk.Toplevel, CustomWidget):
+class AddWindow(tk.Toplevel, CannedFunctions):
     def __init__(self, win_master, win_height, win_width, win_title):
+        """
+        __init__ window that allows a user to create a new response (this is also the edit response window).
+
+        The user types in a title, and then types the body of the response, inserting '$owner' whereever they'd like the users' names to be inserted when the response is copied to the clipboard. A file is generated in the format: response-<title>.txt, and the response is saved in the file.
+
+        Args:
+            win_master (_type_): _description_
+            win_height (_type_): _description_
+            win_width (_type_): _description_
+            win_title (_type_): _description_
+        """
         # main window
         self.win_master = win_master
         # the view responses window
         # self.view_win = view_win
         super().__init__(win_master)
 
-        # set geometry of window
         self.geometry(f"{win_width}x{win_height}")
-        # set background of the add response window
         self["bg"] = "#00a160"
-        # set title
         self.title = win_title
         # create frame to hold label and entry for title on the Add Response window:s
         self.title_frame = tk.Frame(self, bg="#00a160")
         self.title_frame.pack(side=tk.TOP, padx=5, pady=5)
 
         # label to go beside the title textbox
-        self.title_label = tk.Label(self.title_frame, text="Response title: ", font="Roboto 14 bold", fg="#ffffff", bg="#00a160")
+        self.title_label = tk.Label(
+            self.title_frame, text="Response title: ", font="Roboto 14 bold", fg="#ffffff", bg="#00a160")
         self.title_label.pack(side=tk.LEFT, padx=(15, 5), pady=10)
         # textbox to enter ticket response title
         self.title_entry = tk.Text(self.title_frame, width=20, height=1)
         # insert this into the textbox initially
         self.title_entry.insert('1.0', "Ticket response title")
         # when user clicks on the textbox, it will auto-erase the initial text, and then release the click / erase binding (done in erase_text)
-        self.title_entry.bind("<Button-1>", func=lambda e: self.erase_text(self.title_entry))
+        self.title_entry.bind(
+            "<Button-1>", func=lambda e: self.erase_text(self.title_entry))
         # bind function to title entry so when tab is pressed it will move cursor down to the content_entry (adds to efficiency/speed of use)
         self.title_entry.bind("<Tab>", self.focus_next_widget)
         # bigger textbox to hold the ticket response content
         self.content_entry = tk.Text(self, width=40, height=25)
         self.content_entry.insert('1.0', "Ticket response content")
-        self.content_entry.bind("<Button-1>", func=lambda e: self.erase_text(self.content_entry))
+        self.content_entry.bind(
+            "<Button-1>", func=lambda e: self.erase_text(self.content_entry))
         # big button to go below the content textbox - click to create the response, i.e. the response-*.txt file
-        self.create_resp_btn = tk.Button(self, text="Create response", width=20, command=lambda entries=[self.title_entry, self.content_entry]: self.create_response(entries[0], entries[1]))
+        self.create_resp_btn = tk.Button(self, text="Create response", width=20, command=lambda entries=[
+                                         self.title_entry, self.content_entry]: self.create_response(entries[0], entries[1]))
         self.style_normal_button(self.create_resp_btn)
 
-        self.create_resp_btn.pack(side=tk.BOTTOM, padx=25, pady=(10,75))
-        self.title_entry.pack(side=tk.RIGHT, padx=(5,20), pady=15)
+        self.create_resp_btn.pack(side=tk.BOTTOM, padx=25, pady=(10, 75))
+        self.title_entry.pack(side=tk.RIGHT, padx=(5, 20), pady=15)
 
         self.content_entry.pack(side=tk.TOP, padx=20, pady=(5, 20))
-        # on closing
-        self.protocol("WM_DELETE_WINDOW", lambda: self._on_closing(self.win_master))
-        # withdraw window initially
         self.withdraw()
-    # create a new response-*.txt file:
-    # function will create a 'response-*.txt' file using title / content values entered by user on the add response window
+
+
     def create_response(self, title, response_content):
         # since the widgets are transferred in as parameters, I need to take the value/text to get current text in them
         title = title.get(1.0, "end-1c")
-        # print(title)
         response_content = response_content.get(1.0, "end-1c")
-        # print(response_content)
         with open(f"./responses/response-{title}.txt", "w", encoding="utf-8") as txtfile:
             txtfile.write(f"{title}\n\n")
             txtfile.writelines(response_content)
-
-        # notify user that text file has been created, reset the erase_value when clicked event
-        # content_entry.insert('1.0', f"[+] ./responses/response-{title}.txt created")
-        tkinter.messagebox.showinfo('Ticket Response file created', f"[+] ./responses/response-{title}.txt created")
+        # notify user
+        tkinter.messagebox.showinfo(
+            'Ticket Response file created', f"[+] ./responses/response-{title}.txt created")
         self.erase_text(self.content_entry)
         self.erase_text(self.title_entry)
 
 
-# the actual canned response app application class
-class TicketApplication(CustomWidget):
+class TicketApplication(CannedFunctions):
     def __init__(self):
+        """
+        __init__ container class for the ticket application - holds all windows of the app in a dictionary (self.windows).
+        """
         # 3 windows:
         self.windows = {
-            # create root/main window 
+            # create root/main window
             "main": MainWindow(heights["main"], widths["main"], "#00a160"),
             "view": "",
             "add": "",
             "settings": ""
         }
         # create the view and add response windows
-        self.windows["add"] = AddWindow(self.windows["main"], heights["view"], widths["view"], "View stored responses")
-        self.windows["view"] = ViewWindow(self.windows["main"], heights["view"], widths["view"], "Create ticket response:", self.windows["add"])
+        self.windows["add"] = AddWindow(
+            self.windows["main"], heights["view"], widths["view"], "View stored responses")
+        self.windows["view"] = ViewWindow(
+            self.windows["main"], heights["view"], widths["view"], "Create ticket response:", self.windows["add"])
         self.windows["settings"] = Settings(self.windows)
         # instantiate ? settings stuff
         self.settings = Settings(self.windows)
-        logo_img = ImageTk.PhotoImage(Image.open('img\\ticket-bucket-150x150-darkshadow.png'))
+        logo_img = ImageTk.PhotoImage(Image.open(
+            'img\\ticket-bucket-150x150-darkshadow.png'))
 
         # provision windows:
         for window in ["main", "view", "add"]:
@@ -485,8 +527,8 @@ class TicketApplication(CustomWidget):
                 BottomFrame(self.windows[window], self.windows)
         # configure the buttons on the main window:
         self.windows["main"].buttons["view"]["command"] = lambda: self.windows['view'].view_stored_responses()
-        self.windows["main"].buttons["add"]["command"] = lambda: self.change_window(self.windows['main'], self.windows['add'])
-
+        self.windows["main"].buttons["add"]["command"] = lambda: self.change_window(
+            self.windows['main'], self.windows['add'])
 
     def _run_program(self):
         # run the mainloop of root/main window
