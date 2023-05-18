@@ -281,11 +281,11 @@ class ViewWindow(tk.Toplevel, CannedFunctions):
         self.attributes('-alpha', 0.5)
         self.wm_attributes('-topmost', True)
 
-
     def view_stored_responses(self):
         # print("view stored responses")
         # key list:
-        keylist = ["frame", "padframe", "btn", "edit", "delete", "view", "content"]
+        keylist = ["frame", "padframe", "btn",
+                   "edit", "delete", "view", "content"]
 
         # withdraw add window if its showing:
         self.add_window.withdraw()
@@ -477,7 +477,6 @@ class AddWindow(tk.Toplevel, CannedFunctions):
         self.content_entry.pack(side=tk.TOP, padx=20, pady=(5, 20))
         self.withdraw()
 
-
     def create_response(self, title, response_content):
         # since the widgets are transferred in as parameters, I need to take the value/text to get current text in them
         title = title.get(1.0, "end-1c")
@@ -529,6 +528,21 @@ class TicketApplication(CannedFunctions):
         self.windows["main"].buttons["view"]["command"] = lambda: self.windows['view'].view_stored_responses()
         self.windows["main"].buttons["add"]["command"] = lambda: self.change_window(
             self.windows['main'], self.windows['add'])
+
+        # for every window - if any window is closed - popup ask the user if they're sure
+        for window in ["main", "view", "add"]:
+            if window.lower() != "settings":
+                self.windows[window].protocol(
+                    "WM_DELETE_WINDOW", lambda s=self: self.on_closing(s.windows[window]))
+
+    def on_closing(self, window):
+        if tkinter.messagebox.askokcancel("Warning", "Are you sure you want to close the application?"):
+            window.destroy()
+        # destroy whole app
+            try:
+                self.windows["main"].destroy()
+            except Exception as e:
+                print("tried to delete main window")
 
     def _run_program(self):
         # run the mainloop of root/main window
