@@ -1,0 +1,19 @@
+Delaware Tech IT Support, you've reached the Stanton campus, how may I help you?
+
+APP/SOFTWARE ISSUES:
+    - restart app
+    - restart PC 
+    - reinstall app
+    - check for updates
+    - check for compatibility
+    - check for viruses
+
+HARDWARE ISSUES:
+    - restart PC
+    - check for Microsoft/driver updates
+    - try known good replacement to isolate issue
+    - check connections (power, network, etc.)
+
+ACCOUNT ACCESS ISSUES:
+    - soft locked - log in from different IP address. Turn airplane mode on then back off to get new IP for cell phone using cellular connection.
+    - pw reset - verify ID then send link, users can request one link every 7 days themselves, 4-5 most common places where users trip up

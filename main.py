@@ -95,6 +95,12 @@ class CannedFunctions:
             label="Settings", command=lambda: settings_win.deiconify())
         menubar.add_cascade(label="Edit", menu=editmenu)
 
+        # create View cascade:
+        viewmenu = tk.Menu(menubar, tearoff=0)
+        viewmenu.add_command(label="View scripts",
+                             command=lambda: main_win.view_scripts())
+        menubar.add_cascade(label="View", menu=viewmenu)
+
         # create Help cascade:
 
         helpmenu = tk.Menu(menubar, tearoff=0)
@@ -222,6 +228,51 @@ class MainWindow(tk.Tk, CannedFunctions):
 
         self.buttons["view"].pack(side=tk.LEFT, padx=(35, 5), pady=0)
         self.buttons["add"].pack(side=tk.RIGHT, padx=(5, 35), pady=0)
+
+    def view_scripts(self):
+        # show a popup window with a clickable list of all the scripts files in the scripts directory
+        # when a file is clicked, open it in the default text editor
+
+        # get all files in scripts directory
+        files = os.listdir("./scripts")
+        # create a popup with listbox
+        popup = tk.Toplevel(padx=10, pady=15)
+        popup.title("View Scripts")
+        popup.geometry("300x300")
+        popup.config(bg="#00a160")
+        # create a listbox
+        listbox = tk.Listbox(popup, bg="#00a160",
+                             fg="#ffffff", font="Roboto 14 bold")
+        # give the popup some padding between it and listbox
+        popup.rowconfigure(0, weight=1)
+        popup.columnconfigure(0, weight=1)
+
+        # add all files to listbox
+        for file in files:
+            listbox.insert(tk.END, file)
+        # add a scrollbar
+        scrollbar = tk.Scrollbar(popup)
+        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        # link scrollbar to listbox
+        listbox.config(yscrollcommand=scrollbar.set)
+        scrollbar.config(command=listbox.yview)
+        # add a button to open the selected file
+        open_button = tk.Button(
+            popup, text="Open", command=lambda: self.open_script(listbox.get(tk.ACTIVE)))
+        open_button.pack(side=tk.BOTTOM, pady=10)
+        # pack the listbox
+        listbox.pack(side=tk.TOP, fill=tk.BOTH, expand=1)
+        # show the popup
+        popup.mainloop()
+
+    def open_script(self, file):
+        # open the selected script file in the default text editor
+        os.system(f"start ./scripts/{file}")
+
+    def add_response(self):
+        # show the add response window
+        self.windows["add"].deiconify()
+        self.windows["main"].withdraw()
 
 
 class ViewWindow(tk.Toplevel, CannedFunctions):
